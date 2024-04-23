@@ -1,0 +1,25 @@
+{
+    "name": "dvc/contao-template-support",
+    "description": "Several additions which can be used in Contao templates.",
+    "type": "contao-bundle",
+    "version": "1.0.0",
+    "require": {
+        "php": "^8.0",
+        "contao/core-bundle": "^4.13"
+    },
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Jonathan Hermann",
+            "email": "jh@d-v-c.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DVC\\TemplateSupport\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "DVC\\TemplateSupport\\ContaoManager\\Plugin"
+    }
+}

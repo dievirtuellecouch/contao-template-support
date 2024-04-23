@@ -1,0 +1,10 @@
+{% macro attributes(attributes) %}
+{% for name, value in attributes %}
+    {%- if value is not none and value is not same as(false) -%}
+        {%- if name is not same as 'href' -%}
+            {%- set value = value|e -%}
+        {%- endif -%}
+        {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value)|raw -}}
+    {%- endif -%}
+{%- endfor -%}
+{% endmacro %}
