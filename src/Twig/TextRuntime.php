@@ -66,4 +66,20 @@ class TextRuntime implements RuntimeExtensionInterface
     {
         return urldecode($url);
     }
+
+    /**
+     * Returns a left padded string.
+     */
+    public function leftPad($string, $padLength, $padString): string
+    {
+        return str_pad($string, $padLength, $padString, STR_PAD_LEFT);
+    }
+
+    /**
+     * Returns a right padded string.
+     */
+    public function rightPad($string, $padLength, $padString): string
+    {
+        return str_pad($string, $padLength, $padString, STR_PAD_RIGHT);
+    }
 }

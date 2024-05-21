@@ -27,8 +27,10 @@ class Extension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('urlDecode', [TextRuntime::class, 'urlDecode']),
+            new TwigFilter('leftPad', [TextRuntime::class, 'leftPad']),
+            new TwigFilter('rightPad', [TextRuntime::class, 'rightPad']),
             new TwigFilter('unserialize', [UtilityRuntime::class, 'unserialize']),
+            new TwigFilter('urlDecode', [TextRuntime::class, 'urlDecode']),
         ];
     }
 }
