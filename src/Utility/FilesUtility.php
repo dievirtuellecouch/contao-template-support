@@ -89,4 +89,15 @@ class FilesUtility
 
         return FilesModel::findByPath($searchFilename);
     }
+
+    /**
+     * Returns a FileModel with given UUID.
+     * 
+     * @param String $uuid The id of the file to find
+     * @return FilesModel|null The FilesModel or null if the file could not be found
+     */
+    public static function getFileByUuid(string $uuid): ?FilesModel
+    {
+        return FilesModel::findByUuid($uuid);
+    }
 }

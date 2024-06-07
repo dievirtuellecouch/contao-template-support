@@ -18,6 +18,7 @@ class Extension extends AbstractExtension
             new TwigFunction('addGlobalScript', [HeadRuntime::class, 'addGlobalScript']),
             new TwigFunction('addGlobalScriptTag', [HeadRuntime::class, 'addGlobalScriptTag']),
             new TwigFunction('addGlobalScriptToFooter', [HeadRuntime::class, 'addGlobalScriptToFooter']),
+            new TwigFunction('getFileByUuid', [UtilityRuntime::class, 'getFileByUuid']),
             new TwigFunction('makeCssClassVariations', [TextRuntime::class, 'makeCssClassVariations']),
             new TwigFunction('kebabCase', [TextRuntime::class, 'kebabCase']),
             new TwigFunction('versionedPath', [UtilityRuntime::class, 'getVersionedPath']),
