@@ -2,10 +2,10 @@
     "name": "dvc/contao-template-support",
     "description": "Several additions which can be used in Contao templates.",
     "type": "contao-bundle",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "require": {
         "php": "^8.3",
-        "contao/core-bundle": "^^5.3"
+        "contao/core-bundle": "^5.3"
     },
     "license": "LGPL-3.0-or-later",
     "authors": [
