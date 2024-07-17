@@ -3,6 +3,7 @@
 namespace DVC\TemplateSupport\Utility;
 
 use Contao\FilesModel;
+use Contao\StringUtil;
 
 class FilesUtility
 {
@@ -40,7 +41,7 @@ class FilesUtility
             return null;
         }
 
-        $metadata = \deserialize($file->meta);
+        $metadata = StringUtil::deserialize($file->meta);
 
         if (empty($metadata)) {
             return null;
