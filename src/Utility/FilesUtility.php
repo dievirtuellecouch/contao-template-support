@@ -78,13 +78,13 @@ class FilesUtility
             return null;
         }
 
-        if (!\in_array($variantName, ['mobile', 'desktop', 'thumbnail'])) {
+        if (!\in_array($variantName, ['mobil', 'mobile', 'desktop', 'thumbnail'])) {
             return null;
         }
 
-        $pattern = '/(.*)\s(.*)\.(.*)/';
+        $pattern = '/(.*)_(.*)\.(.*)/';
         $replacementSuffix = ($variantName == 'thumbnail') ? 'jpg' : 'mp4';
-        $replacementMask = \sprintf('${1} %s.%s', $variantName, $replacementSuffix);
+        $replacementMask = \sprintf('${1}_%s.%s', $variantName, $replacementSuffix);
 
         $searchFilename = preg_replace($pattern, $replacementMask, $file->path);
 
