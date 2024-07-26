@@ -30,6 +30,7 @@ class Extension extends AbstractExtension
         return [
             new TwigFilter('leftPad', [TextRuntime::class, 'leftPad']),
             new TwigFilter('rightPad', [TextRuntime::class, 'rightPad']),
+            new TwigFilter('superscriptMwd', [TextRuntime::class, 'superscriptMwd']),
             new TwigFilter('unserialize', [UtilityRuntime::class, 'unserialize']),
             new TwigFilter('urlDecode', [TextRuntime::class, 'urlDecode']),
         ];

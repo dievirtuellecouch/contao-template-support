@@ -82,4 +82,13 @@ class TextRuntime implements RuntimeExtensionInterface
     {
         return str_pad($string, $padLength, $padString, STR_PAD_RIGHT);
     }
+
+    /**
+     * Search for occurence of m/w/d combination in given
+     * string and place it inside a sup tag.
+     */
+    public function superscriptMwd(string $string): string
+    {
+        return \preg_replace("/\s((?>&#40;)?\(?m\/w\/d\)?(?>&#41;)?)/i", '&nbsp;<sup>${1}</sup>', $string);
+    }
 }
