@@ -89,6 +89,6 @@ class TextRuntime implements RuntimeExtensionInterface
      */
     public function superscriptMwd(string $string): string
     {
-        return \preg_replace("/\s((?>&#40;)?\(?m\/w\/d\)?(?>&#41;)?)/i", '&nbsp;<sup>${1}</sup>', $string);
+        return \preg_replace("/((?>&#40;)?\(?m\/w\/d\)?(?>&#41;)?)/i", '<sup>${1}</sup>', $string);
     }
 }
