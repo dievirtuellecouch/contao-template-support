@@ -101,4 +101,15 @@ class FilesUtility
     {
         return FilesModel::findByUuid($uuid);
     }
+
+    /**
+     * Returns a FileModel with given path.
+     * 
+     * @param String $path The path of the file to find
+     * @return FilesModel|null The FilesModel or null if the file could not be found
+     */
+    public static function getFileByPath(string $path): ?FilesModel
+    {
+        return FilesModel::findByPath($path);
+    }
 }

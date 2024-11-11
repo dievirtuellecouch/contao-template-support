@@ -14,6 +14,11 @@ class UtilityRuntime implements RuntimeExtensionInterface
         return FilesUtility::getFileByUuid($uuid);
     }
 
+    public function getFileByPath(string $path): ?FilesModel
+    {
+        return FilesUtility::getFileByPath($path);
+    }
+
     public function getVersionedPath(string $path): string
     {
         return AssetUtility::getVersionedPath($path);
