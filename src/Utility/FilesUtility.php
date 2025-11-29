@@ -3,7 +3,6 @@
 namespace DVC\TemplateSupport\Utility;
 
 use Contao\FilesModel;
-use Contao\StringUtil;
 
 class FilesUtility
 {
@@ -41,7 +40,7 @@ class FilesUtility
             return null;
         }
 
-        $metadata = StringUtil::deserialize($file->meta);
+        $metadata = \Contao\StringUtil::deserialize($file->meta);
 
         if (empty($metadata)) {
             return null;
@@ -78,38 +77,16 @@ class FilesUtility
             return null;
         }
 
-        if (!\in_array($variantName, ['mobil', 'mobile', 'desktop', 'thumbnail'])) {
+        if (!\in_array($variantName, ['mobile', 'desktop', 'thumbnail'])) {
             return null;
         }
 
-        $pattern = '/(.*)_(.*)\.(.*)/';
+        $pattern = '/(.*)\s(.*)\.(.*)/';
         $replacementSuffix = ($variantName == 'thumbnail') ? 'jpg' : 'mp4';
-        $replacementMask = \sprintf('${1}_%s.%s', $variantName, $replacementSuffix);
+        $replacementMask = \sprintf('${1} %s.%s', $variantName, $replacementSuffix);
 
         $searchFilename = preg_replace($pattern, $replacementMask, $file->path);
 
         return FilesModel::findByPath($searchFilename);
-    }
-
-    /**
-     * Returns a FileModel with given UUID.
-     * 
-     * @param String $uuid The id of the file to find
-     * @return FilesModel|null The FilesModel or null if the file could not be found
-     */
-    public static function getFileByUuid(string $uuid): ?FilesModel
-    {
-        return FilesModel::findByUuid($uuid);
-    }
-
-    /**
-     * Returns a FileModel with given path.
-     * 
-     * @param String $path The path of the file to find
-     * @return FilesModel|null The FilesModel or null if the file could not be found
-     */
-    public static function getFileByPath(string $path): ?FilesModel
-    {
-        return FilesModel::findByPath($path);
     }
 }

@@ -68,27 +68,28 @@ class TextRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Returns a left padded string.
+     * Wrap occurrences of (m/w/d) with a <sub> tag.
+     * Handles optional spaces and non-breaking spaces between characters.
      */
-    public function leftPad($string, $padLength, $padString): string
+    public function wrapMwdSub(string $text): string
     {
-        return str_pad($string, $padLength, $padString, STR_PAD_LEFT);
-    }
+        if (false !== strpos($text, '<sub>')) {
+            return $text;
+        }
 
-    /**
-     * Returns a right padded string.
-     */
-    public function rightPad($string, $padLength, $padString): string
-    {
-        return str_pad($string, $padLength, $padString, STR_PAD_RIGHT);
-    }
+        // Normalize common NBSP variants to regular space for matching, but keep original text for output
+        $normalized = str_replace(["\xC2\xA0", '&nbsp;'], ' ', $text);
 
-    /**
-     * Search for occurence of m/w/d combination in given
-     * string and place it inside a sup tag.
-     */
-    public function superscriptMwd(string $string): string
-    {
-        return \preg_replace("/((?>&#40;)?\(?m\/w\/d\)?(?>&#41;)?)/i", '<sup>${1}</sup>', $string);
+        // Match only (m/w/d) with optional spaces (including unicode spaces) between characters
+        $pattern = '/\s*\((?:\h|\x{00A0})*m(?:\h|\x{00A0})*\/(?:\h|\x{00A0})*w(?:\h|\x{00A0})*\/(?:\h|\x{00A0})*d(?:\h|\x{00A0})*\)/u';
+
+        if (!preg_match($pattern, $normalized)) {
+            return $text;
+        }
+
+        // Replace in normalized copy then return the modified string
+        $replaced = preg_replace($pattern, ' <sub>(m/w/d)</sub>', $normalized);
+
+        return $replaced ?? $text;
     }
 }

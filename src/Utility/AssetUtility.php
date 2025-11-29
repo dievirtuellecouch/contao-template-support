@@ -2,7 +2,6 @@
 
 namespace DVC\TemplateSupport\Utility;
 
-use Contao\StringUtil;
 use Contao\System;
 
 class AssetUtility
@@ -19,17 +18,21 @@ class AssetUtility
     {
         $projectDir = self::getProjectDir();
 
+        $src = ltrim($src, '/');
+
         $mtime = null;
 
         if (file_exists($projectDir . '/' . $src)) {
             $mtime = filemtime($projectDir . '/' . $src);
         }
         else {
-            $webDir = StringUtil::stripRootDir(self::getWebDir());
+            $webDir = self::getWebDir();
+
+            $webPath = $projectDir . '/' . ltrim($webDir, '/');
 
             // Handle public bundle resources in web/
-            if (file_exists($projectDir . '/' . $webDir . '/' . $src)) {
-                $mtime = filemtime($projectDir . '/' . $webDir . '/' . $src);
+            if (file_exists($webPath . '/' . $src)) {
+                $mtime = filemtime($webPath . '/' . $src);
             }
         }
 

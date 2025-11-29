@@ -18,8 +18,6 @@ class Extension extends AbstractExtension
             new TwigFunction('addGlobalScript', [HeadRuntime::class, 'addGlobalScript']),
             new TwigFunction('addGlobalScriptTag', [HeadRuntime::class, 'addGlobalScriptTag']),
             new TwigFunction('addGlobalScriptToFooter', [HeadRuntime::class, 'addGlobalScriptToFooter']),
-            new TwigFunction('getFileByUuid', [UtilityRuntime::class, 'getFileByUuid']),
-            new TwigFunction('getFileByPath', [UtilityRuntime::class, 'getFileByPath']),
             new TwigFunction('makeCssClassVariations', [TextRuntime::class, 'makeCssClassVariations']),
             new TwigFunction('kebabCase', [TextRuntime::class, 'kebabCase']),
             new TwigFunction('versionedPath', [UtilityRuntime::class, 'getVersionedPath']),
@@ -29,11 +27,9 @@ class Extension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('leftPad', [TextRuntime::class, 'leftPad']),
-            new TwigFilter('rightPad', [TextRuntime::class, 'rightPad']),
-            new TwigFilter('superscriptMwd', [TextRuntime::class, 'superscriptMwd']),
-            new TwigFilter('unserialize', [UtilityRuntime::class, 'unserialize']),
             new TwigFilter('urlDecode', [TextRuntime::class, 'urlDecode']),
+            new TwigFilter('unserialize', [UtilityRuntime::class, 'unserialize']),
+            new TwigFilter('wrapMwdSub', [TextRuntime::class, 'wrapMwdSub'], ['is_safe' => ['html']]),
         ];
     }
 }
