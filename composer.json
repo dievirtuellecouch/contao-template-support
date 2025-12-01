@@ -2,7 +2,7 @@
     "name": "dvc/contao-template-support",
     "description": "Several additions which can be used in Contao templates.",
     "type": "contao-bundle",
-    "version": "2.0.6",
+    "version": "1.9.0",
     "require": {
         "php": "^8.1",
         "contao/core-bundle": "^4.13 || ^5.3"
