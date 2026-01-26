@@ -1,6 +1,6 @@
 <?php
 
-namespace DVC\TemplateSupport\Module;
+namespace Dvc\ContaoTemplateSupportBundle\Module;
 
 use Contao\Module;
 

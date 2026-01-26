@@ -1,6 +1,6 @@
 <?php
 
-namespace DVC\TemplateSupport;
+namespace Dvc\ContaoTemplateSupportBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

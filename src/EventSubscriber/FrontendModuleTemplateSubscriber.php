@@ -1,6 +1,6 @@
 <?php
 
-namespace DVC\TemplateSupport\EventSubscriber;
+namespace Dvc\ContaoTemplateSupportBundle\EventSubscriber;
 
 use Contao\ModuleModel;
 use Plenta\ContaoJobsBasic\Controller\Contao\FrontendModule\JobOfferReaderController;
