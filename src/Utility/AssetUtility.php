@@ -1,38 +1,35 @@
 <?php
 
-namespace DVC\TemplateSupport\Utility;
+declare(strict_types=1);
+
+namespace Dvc\ContaoTemplateSupportBundle\Utility;
 
 use Contao\System;
 
 class AssetUtility
 {
-    const VERSION_PATH_DELIMITER_QUERY = 'query';
-    const VERSION_PATH_DELIMITER_PIPE = 'pipe';
+    public const VERSION_PATH_DELIMITER_QUERY = 'query';
+    public const VERSION_PATH_DELIMITER_PIPE = 'pipe';
 
     /**
      * Returns the timestamp for the asset at given path.
-     * @param string The path to the file.
-     * @return string|null The timestamp or null if the file does not exist.
+     * @param string $src The path to the file.
+     * @return int|null The timestamp or null if the file does not exist.
      */
-    public static function getTimestampForAsset(string $src): ?string
+    public static function getTimestampForAsset(string $src): ?int
     {
         $projectDir = self::getProjectDir();
-
-        $src = ltrim($src, '/');
 
         $mtime = null;
 
         if (file_exists($projectDir . '/' . $src)) {
             $mtime = filemtime($projectDir . '/' . $src);
-        }
-        else {
-            $webDir = self::getWebDir();
+        } else {
+            $publicDir = self::getPublicDir();
 
-            $webPath = $projectDir . '/' . ltrim($webDir, '/');
-
-            // Handle public bundle resources in web/
-            if (file_exists($webPath . '/' . $src)) {
-                $mtime = filemtime($webPath . '/' . $src);
+            // Handle public bundle resources in public/
+            if (file_exists($projectDir . '/' . $publicDir . '/' . $src)) {
+                $mtime = filemtime($projectDir . '/' . $publicDir . '/' . $src);
             }
         }
 
@@ -41,10 +38,12 @@ class AssetUtility
 
     /**
      * Returns the versioned path for given asset path.
-     * @param string The path to the resource
+     * @param string $src The path to the resource
+     * @param string|null $delimiter The delimiter type
      * @return string The path with version parameter
      */
-    public static function getVersionedPath(string $src, ?string $delimiter = self::VERSION_PATH_DELIMITER_QUERY): string {
+    public static function getVersionedPath(string $src, ?string $delimiter = self::VERSION_PATH_DELIMITER_QUERY): string
+    {
         $timestamp = self::getTimestampForAsset($src);
 
         if ($timestamp === null) {
@@ -56,7 +55,7 @@ class AssetUtility
                 return \sprintf(
                     '%s?v=%s',
                     $src,
-                    substr(md5($timestamp), 0, 8)
+                    substr(md5((string) $timestamp), 0, 8)
                 );
 
             case self::VERSION_PATH_DELIMITER_PIPE:
@@ -71,9 +70,21 @@ class AssetUtility
         }
     }
 
-    private static function getWebDir(): string
+    private static function getPublicDir(): string
     {
-        return System::getContainer()->getParameter('contao.web_dir');
+        $container = System::getContainer();
+
+        // Contao 5.3: use kernel.public_dir instead of contao.web_dir
+        if ($container->hasParameter('kernel.public_dir')) {
+            return basename($container->getParameter('kernel.public_dir'));
+        }
+
+        // Fallback for compatibility
+        if ($container->hasParameter('contao.web_dir')) {
+            return basename($container->getParameter('contao.web_dir'));
+        }
+
+        return 'public';
     }
 
     private static function getProjectDir(): string

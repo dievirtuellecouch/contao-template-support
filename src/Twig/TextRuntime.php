@@ -1,12 +1,14 @@
 <?php
 
-namespace DVC\TemplateSupport\Twig;
+declare(strict_types=1);
+
+namespace Dvc\ContaoTemplateSupportBundle\Twig;
 
 use Twig\Extension\RuntimeExtensionInterface;
 
 class TextRuntime implements RuntimeExtensionInterface
 {
-    const CSS_CLASS_VARIATION_DELIMITER = '_';
+    public const CSS_CLASS_VARIATION_DELIMITER = '_';
 
     /**
      * Return a list of CSS variation class names.
@@ -59,7 +61,7 @@ class TextRuntime implements RuntimeExtensionInterface
     /**
      * URL decodes given string.
      *
-     * @param string URL encoded string
+     * @param string $url URL encoded string
      * @return string URL decoded string
      */
     public function urlDecode(string $url): string
@@ -68,28 +70,18 @@ class TextRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Wrap occurrences of (m/w/d) with a <sub> tag.
-     * Handles optional spaces and non-breaking spaces between characters.
+     * Returns a left padded string.
      */
-    public function wrapMwdSub(string $text): string
+    public function leftPad(string $string, int $padLength, string $padString): string
     {
-        if (false !== strpos($text, '<sub>')) {
-            return $text;
-        }
+        return str_pad($string, $padLength, $padString, STR_PAD_LEFT);
+    }
 
-        // Normalize common NBSP variants to regular space for matching, but keep original text for output
-        $normalized = str_replace(["\xC2\xA0", '&nbsp;'], ' ', $text);
-
-        // Match only (m/w/d) with optional spaces (including unicode spaces) between characters
-        $pattern = '/\s*\((?:\h|\x{00A0})*m(?:\h|\x{00A0})*\/(?:\h|\x{00A0})*w(?:\h|\x{00A0})*\/(?:\h|\x{00A0})*d(?:\h|\x{00A0})*\)/u';
-
-        if (!preg_match($pattern, $normalized)) {
-            return $text;
-        }
-
-        // Replace in normalized copy then return the modified string
-        $replaced = preg_replace($pattern, ' <sub>(m/w/d)</sub>', $normalized);
-
-        return $replaced ?? $text;
+    /**
+     * Returns a right padded string.
+     */
+    public function rightPad(string $string, int $padLength, string $padString): string
+    {
+        return str_pad($string, $padLength, $padString, STR_PAD_RIGHT);
     }
 }

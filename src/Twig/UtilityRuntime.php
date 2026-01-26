@@ -1,12 +1,21 @@
 <?php
 
-namespace DVC\TemplateSupport\Twig;
+declare(strict_types=1);
 
-use DVC\TemplateSupport\Utility\AssetUtility;
+namespace Dvc\ContaoTemplateSupportBundle\Twig;
+
+use Contao\FilesModel;
+use Dvc\ContaoTemplateSupportBundle\Utility\AssetUtility;
+use Dvc\ContaoTemplateSupportBundle\Utility\FilesUtility;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class UtilityRuntime implements RuntimeExtensionInterface
 {
+    public function getFileByUuid(string $uuid): ?FilesModel
+    {
+        return FilesUtility::getFileByUuid($uuid);
+    }
+
     public function getVersionedPath(string $path): string
     {
         return AssetUtility::getVersionedPath($path);

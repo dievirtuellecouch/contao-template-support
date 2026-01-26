@@ -1,6 +1,8 @@
 <?php
 
-namespace DVC\TemplateSupport\Utility;
+declare(strict_types=1);
+
+namespace Dvc\ContaoTemplateSupportBundle\Utility;
 
 use Contao\FilesModel;
 
@@ -23,10 +25,10 @@ class FilesUtility
 
     /**
      * Returns the metadata for given file and current language.
-     * @param $file The FileModel object.
+     * @param FilesModel|null $file The FileModel object.
      * @return array|null The metadata as array.
      */
-    public static function getMetadataForFile($file): ?array
+    public static function getMetadataForFile(?FilesModel $file): ?array
     {
         if (empty($file)) {
             return null;
@@ -40,7 +42,7 @@ class FilesUtility
             return null;
         }
 
-        $metadata = \Contao\StringUtil::deserialize($file->meta);
+        $metadata = \deserialize($file->meta);
 
         if (empty($metadata)) {
             return null;
@@ -55,17 +57,17 @@ class FilesUtility
 
     /**
      * Returns the FilesModel of a variant of given video file, e. g. the
-     * mobile version or thumbnail image. The variant’s filename has to
+     * mobile version or thumbnail image. The variant's filename has to
      * follow the naming scheme explained below.
      *
-     * @param FilesModel $filesModel The default video file
-     * @param String $variantName Possible options: "desktop", "mobile", "thumbnail"
+     * @param FilesModel|null $file The default video file
+     * @param string $variantName Possible options: "desktop", "mobile", "thumbnail"
      * @return FilesModel|null The FilesModel or null if variant could not be found
      */
-    public static function getVideoFileVariant(?FilesModel $file, String $variantName): ?FilesModel
+    public static function getVideoFileVariant(?FilesModel $file, string $variantName): ?FilesModel
     {
         /**
-         * Try to guess the placeholder filepath based on the video’s filename,
+         * Try to guess the placeholder filepath based on the video's filename,
          * when no explicit placeholder has been set.
          * The video filename is required to be space-separated; the last part
          * of the name should be the type identifier ("desktop", "mobile", …).
@@ -77,16 +79,27 @@ class FilesUtility
             return null;
         }
 
-        if (!\in_array($variantName, ['mobile', 'desktop', 'thumbnail'])) {
+        if (!\in_array($variantName, ['mobil', 'mobile', 'desktop', 'thumbnail'])) {
             return null;
         }
 
-        $pattern = '/(.*)\s(.*)\.(.*)/';
+        $pattern = '/(.*)_(.*)\.(.*)/';
         $replacementSuffix = ($variantName == 'thumbnail') ? 'jpg' : 'mp4';
-        $replacementMask = \sprintf('${1} %s.%s', $variantName, $replacementSuffix);
+        $replacementMask = \sprintf('${1}_%s.%s', $variantName, $replacementSuffix);
 
         $searchFilename = preg_replace($pattern, $replacementMask, $file->path);
 
         return FilesModel::findByPath($searchFilename);
+    }
+
+    /**
+     * Returns a FileModel with given UUID.
+     *
+     * @param string $uuid The id of the file to find
+     * @return FilesModel|null The FilesModel or null if the file could not be found
+     */
+    public static function getFileByUuid(string $uuid): ?FilesModel
+    {
+        return FilesModel::findByUuid($uuid);
     }
 }

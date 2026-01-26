@@ -1,19 +1,21 @@
 <?php
 
-namespace DVC\TemplateSupport\ContaoManager;
+declare(strict_types=1);
+
+namespace Dvc\ContaoTemplateSupportBundle\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
-use DVC\TemplateSupport\TemplateSupportBundle;
+use Dvc\ContaoTemplateSupportBundle\DvcContaoTemplateSupportBundle;
 
 class Plugin implements BundlePluginInterface
 {
     public function getBundles(ParserInterface $parser): array
     {
         return [
-            BundleConfig::create(TemplateSupportBundle::class)
+            BundleConfig::create(DvcContaoTemplateSupportBundle::class)
                 ->setLoadAfter([
                     ContaoCoreBundle::class,
                 ]),

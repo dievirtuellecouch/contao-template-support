@@ -1,36 +1,38 @@
 <?php
 
-namespace DVC\TemplateSupport\Twig;
+declare(strict_types=1);
 
-use DVC\TemplateSupport\Utility\AssetUtility;
+namespace Dvc\ContaoTemplateSupportBundle\Twig;
+
+use Dvc\ContaoTemplateSupportBundle\Utility\AssetUtility;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class HeadRuntime implements RuntimeExtensionInterface
 {
     public function addGlobalStylesheet(string $path): void
     {
-        $GLOBALS['TL_CSS'][] = AssetUtility::getVersionedPath($path, AssetUtility::VERSION_PATH_DELIMITER_PIPE)  . '|static';
+        $GLOBALS['TL_CSS'][] = AssetUtility::getVersionedPath($path, AssetUtility::VERSION_PATH_DELIMITER_PIPE) . '|static';
     }
 
-    public function addGlobalScript(string $path, $options = []): void
+    public function addGlobalScript(string $path, array $options = []): void
     {
         $path = AssetUtility::getVersionedPath($path);
-        $attributes = !empty($options) ? ' ' . \join(' ', $options) : '';
+        $attributes = !empty($options) ? ' ' . \implode(' ', $options) : '';
 
         $GLOBALS['TL_HEAD'][] = \sprintf('<script src="%s"%s></script>', $path, $attributes);
     }
 
-    public function addGlobalScriptTag($options = []): void
+    public function addGlobalScriptTag(array $options = []): void
     {
-        $attributes = !empty($options) ? ' ' . \join(' ', $options) : '';
+        $attributes = !empty($options) ? ' ' . \implode(' ', $options) : '';
 
         $GLOBALS['TL_HEAD'][] = \sprintf('<script%s></script>', $attributes);
     }
 
-    public function addGlobalScriptToFooter(string $path, $options = []): void
+    public function addGlobalScriptToFooter(string $path, array $options = []): void
     {
         $path = AssetUtility::getVersionedPath($path);
-        $attributes = !empty($options) ? ' ' . \join(' ', $options) : '';
+        $attributes = !empty($options) ? ' ' . \implode(' ', $options) : '';
 
         $GLOBALS['TL_BODY'][] = \sprintf('<script src="%s"%s></script>', $path, $attributes);
     }

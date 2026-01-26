@@ -1,0 +1,31 @@
+{#
+    Helper macros for template support
+#}
+
+{% macro makeCssClassVariations(baseClass, allowedVariationNames, context) %}
+    {%- set classes = [] -%}
+    {%- for variationName in allowedVariationNames -%}
+        {%- if attribute(context, variationName) is defined and attribute(context, variationName) -%}
+            {%- set variationValue = attribute(context, variationName) -%}
+            {%- set kebabName = variationName|replace({'([a-z])([A-Z])': '$1-$2'})|lower -%}
+            {%- if variationValue is same as(true) -%}
+                {%- set classes = classes|merge([baseClass ~ '_' ~ kebabName]) -%}
+            {%- else -%}
+                {%- set classes = classes|merge([baseClass ~ '_' ~ kebabName ~ '-' ~ variationValue]) -%}
+            {%- endif -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {{ classes|join(' ') }}
+{%- endmacro %}
+
+{% macro kebabCase(text) %}
+    {{- text|replace({'([a-z])([A-Z])': '$1-$2'})|lower -}}
+{% endmacro %}
+
+{% macro attributes(attrList) %}
+    {%- for name, value in attrList -%}
+        {%- if value is not null -%}
+            {{ name }}="{{ value }}"{{ ' ' }}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
